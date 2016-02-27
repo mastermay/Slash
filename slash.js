@@ -1,5 +1,5 @@
 Vue.config.debug = true;
-
+var CACHE = {};
 var PostList = Vue.extend({
     template: '#postList',
     data: function() {
@@ -22,7 +22,7 @@ var PostList = Vue.extend({
                 label = params['name'];
                 home = false;
             }
-            var cache = $('#content').data(label + 'Page' + page);
+            var cache = CACHE[label + 'Page' + page];
             if (cache) {
                 _self.$data.posts = cache.posts;
                 _self.$data.prev = cache.prev;
@@ -32,7 +32,7 @@ var PostList = Vue.extend({
                 return;
             }
 
-            $.ajax({
+            this.$http({
                 url: "https://api.github.com/repos/" + config['user'] + "/" + config['repo'] + "/issues",
                 data: {
                     filter: 'created',
@@ -40,43 +40,48 @@ var PostList = Vue.extend({
                     per_page: config['per_page'],
                     labels: label
                 },
-                success: function(data, textStatus, jqXHR) {
-                    var link = jqXHR.getResponseHeader("Link"),
-                        prev = false,
-                        next = false;
-                    if (link && link.indexOf('rel="prev"') > 0) {
-                        prev = parseInt(page) - 1;
-                    }
-                    if (link && link.indexOf('rel="next"') > 0) {
-                        next = parseInt(page) + 1;
-                    }
-                    _self.$data.posts = data;
-                    _self.$data.prev = prev;
-                    _self.$data.next = next;
-                    _self.$data.home = home;
-                    _self.$data.label = label;
-                    title = config['blogname'];
-                    if (page != 1) {
-                        title = 'Page ' + page + config['sep'] + title;
-                    }
-                    if (label) {
-                        title = label + config['sep'] + title;
-                    }
-                    $(document).attr("title", title);
-
-                    $('#content').data(label + 'Page' + page, {
-                        posts: data,
-                        prev: prev,
-                        next: next,
-                        home: home,
-                        label: label
-                    });
-                    for (var i in data) {
-                        $('#content').data('Post' + data[i].number, {post: data[i]});
-                    }
-
+                method: 'GET'
+            }).then(function(response) {
+                var data = response.data,
+                    link = response.headers('Link'),
+                    prev = false,
+                    next = false;
+                if (link && link.indexOf('rel="prev"') > 0) {
+                    prev = parseInt(page) - 1;
                 }
-            });
+                if (link && link.indexOf('rel="next"') > 0) {
+                    next = parseInt(page) + 1;
+                }
+                _self.$data.posts = data;
+                _self.$data.prev = prev;
+                _self.$data.next = next;
+                _self.$data.home = home;
+                _self.$data.label = label;
+                title = config['blogname'];
+                if (page != 1) {
+                    title = 'Page ' + page + config['sep'] + title;
+                }
+                if (label) {
+                    title = label + config['sep'] + title;
+                }
+                document.title = title;
+
+                CACHE[label + 'Page' + page] = {
+                    posts: data,
+                    prev: prev,
+                    next: next,
+                    home: home,
+                    label: label
+                };
+                for (var i in data) {
+                    if (!CACHE.hasOwnProperty('Post' + data[i].number)) {
+                        CACHE['Post' + data[i].number] = {
+                            post: data[i]
+                        };
+                    }
+                }
+            }, function(response) {});
+
         }
     }
 });
@@ -90,7 +95,7 @@ var PostDetail = Vue.extend({
     },
     route: {
         data: function() {
-            var cache = $('#content').data('Post' + this.$route.params['id']);
+            var cache = CACHE['Post' + this.$route.params['id']];
             if (cache) {
                 var data = cache.post;
                 data.body = marked(data.body);
@@ -98,13 +103,15 @@ var PostDetail = Vue.extend({
                 return;
             }
             var _self = this;
-            $.ajax({
+            this.$http({
                 url: "https://api.github.com/repos/" + config['user'] + "/" + config['repo'] + "/issues/" + this.$route.params['id'],
-                success: function(data) {
-                    data.body = marked(data.body);
-                    _self.$data.post = data;
-                }
-            });
+                method: 'GET'
+            }).then(function(response) {
+                var data = response.data;
+                data.body = marked(data.body);
+                _self.$data.post = data;
+                document.title = data.title + config['sep'] + config['blogname'];
+            }, function(response) {});
         }
     }
 });
@@ -134,6 +141,6 @@ router.map({
     }
 });
 
-$(document).ready(function() {
+window.onload = function() {
     router.start(App, '#content');
-});
+};
