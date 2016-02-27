@@ -22,6 +22,16 @@ var PostList = Vue.extend({
                 label = params['name'];
                 home = false;
             }
+            var cache = $('#content').data(label + 'Page' + page);
+            if (cache) {
+                _self.$data.posts = cache.posts;
+                _self.$data.prev = cache.prev;
+                _self.$data.next = cache.next;
+                _self.$data.home = cache.home;
+                _self.$data.label = cache.label;
+                return;
+            }
+
             $.ajax({
                 url: "https://api.github.com/repos/" + config['user'] + "/" + config['repo'] + "/issues",
                 data: {
@@ -53,6 +63,18 @@ var PostList = Vue.extend({
                         title = label + config['sep'] + title;
                     }
                     $(document).attr("title", title);
+
+                    $('#content').data(label + 'Page' + page, {
+                        posts: data,
+                        prev: prev,
+                        next: next,
+                        home: home,
+                        label: label
+                    });
+                    for (var i in data) {
+                        $('#content').data('Post' + data[i].number, {post: data[i]});
+                    }
+
                 }
             });
         }
@@ -68,6 +90,13 @@ var PostDetail = Vue.extend({
     },
     route: {
         data: function() {
+            var cache = $('#content').data('Post' + this.$route.params['id']);
+            if (cache) {
+                var data = cache.post;
+                data.body = marked(data.body);
+                this.$data.post = data;
+                return;
+            }
             var _self = this;
             $.ajax({
                 url: "https://api.github.com/repos/" + config['user'] + "/" + config['repo'] + "/issues/" + this.$route.params['id'],
