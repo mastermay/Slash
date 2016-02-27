@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Slash</title>
     <script src="jquery.min.js" charset="utf-8"></script>
+    <script src="marked.min.js" charset="utf-8"></script>
     <script src="vue.js" charset="utf-8"></script>
     <script src="vue-router.min.js" charset="utf-8"></script>
     <script src="config.js" charset="utf-8"></script>
@@ -51,7 +52,7 @@
                 <h2>{{ post.title }}</h2>
             </header>
             <div>
-                {{ post.body }}
+                {{{ post.body }}}
             </div>
         </article>
     </script>

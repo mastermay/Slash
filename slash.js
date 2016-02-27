@@ -72,6 +72,7 @@ var PostDetail = Vue.extend({
             $.ajax({
                 url: "https://api.github.com/repos/" + config['user'] + "/" + config['repo'] + "/issues/" + this.$route.params['id'],
                 success: function(data) {
+                    data.body = marked(data.body);
                     _self.$data.post = data;
                 }
             });
