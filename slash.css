@@ -50,7 +50,7 @@ body {
     overflow: auto;
     padding-bottom: 100px;
 }
-#content{
+#content {
     transition: all .5s;
     -webkit-transition: all .5s;
 }
