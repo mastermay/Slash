@@ -13,6 +13,7 @@ var PostList = Vue.extend({
     },
     route: {
         data: function() {
+            document.getElementById("content").style.opacity = 0.6;
             var _self = this,
                 params = this.$route.params,
                 page = params['page'] || 1,
@@ -29,6 +30,7 @@ var PostList = Vue.extend({
                 _self.$data.next = cache.next;
                 _self.$data.home = cache.home;
                 _self.$data.label = cache.label;
+                document.getElementById("content").style.opacity = 1;
                 return;
             }
 
@@ -65,7 +67,7 @@ var PostList = Vue.extend({
                     title = label + config['sep'] + title;
                 }
                 document.title = title;
-                document.getElementById("loading").style.display = "none";
+                document.getElementById("content").style.opacity = 1;
 
                 CACHE[label + 'Page' + page] = {
                     posts: data,
@@ -96,11 +98,13 @@ var PostDetail = Vue.extend({
     },
     route: {
         data: function() {
+            document.getElementById("content").style.opacity = 0.6;
             var cache = CACHE['Post' + this.$route.params['id']];
             if (cache) {
                 var data = cache.post;
                 data.body = marked(data.body);
                 this.$data.post = data;
+                document.getElementById("content").style.opacity = 1;
                 return;
             }
             var _self = this;
@@ -112,7 +116,7 @@ var PostDetail = Vue.extend({
                 data.body = marked(data.body);
                 _self.$data.post = data;
                 document.title = data.title + config['sep'] + config['blogname'];
-                document.getElementById("loading").style.display = "none";
+                document.getElementById("content").style.opacity = 1;
             }, function(response) {});
         }
     }
