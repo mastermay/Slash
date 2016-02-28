@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Slash</title>
+    <link rel="stylesheet" href="slash.css" media="screen" charset="utf-8">
     <script src="vue.js" charset="utf-8"></script>
     <script src="vue-router.min.js" charset="utf-8"></script>
     <script src="vue-resource.min.js" charset="utf-8"></script>
@@ -13,20 +14,31 @@
 </head>
 
 <body>
-    <div id="content">
-        <router-view></router-view>
+    <div id="wrap">
+        <div id="container">
+            <header class="header">
+                <h1><a href="">./ Slash</a></h1>
+                <p>A github issues based blog.</p>
+            </header>
+            <div id="content">
+                <router-view></router-view>
+            </div>
+        </div>
     </div>
-
+    <footer class="footer">
+        <p>
+            Powered by <a href="https://github.com/mastermay/Slash" target="_blank">Slash</a>
+        </p>
+    </footer>
     <script type="text/template" id="postList">
         <div class="posts">
-            <article class="post" v-for="post in posts">
-                <header class="post-title">
-                    <h2><a v-link="{ name: 'post', params: { id: post.number } }">{{ post.title }}</a></h2>
-                </header>
-                <ul class="post-meta" v-for="label in post.labels">
-                    <li><a v-link="{ name: 'label', params: { name: label.name } }">{{label.name}}</a></li>
+            <div class="post" v-for="post in posts">
+                <h2><a class="title" v-link="{ name: 'post', params: { id: post.number } }">{{ post.title }}</a></h2>
+                <ul class="tags" v-for="label in post.labels">
+                    <li class="tag"><a v-link="{ name: 'label', params: { name: label.name } }">{{label.name}}</a></li>
                 </ul>
-            </article>
+                <span class="time">{{new Date(post.created_at).toLocaleDateString()}}</span>
+            </div>
         </div>
         <div class="pagination" v-show="home">
             <span v-show="prev">
@@ -47,11 +59,13 @@
     </script>
 
     <script type="text/template" id="postDetail">
-        <article>
-            <header>
-                <h2>{{ post.title }}</h2>
-            </header>
-            <div>
+        <article class="post">
+            <h2><a class="title" v-link="{ name: 'post', params: { id: post.number } }">{{ post.title }}</a></h2>
+            <ul class="tags" v-for="label in post.labels">
+                <li class="tag"><a v-link="{ name: 'label', params: { name: label.name } }">{{label.name}}</a></li>
+            </ul>
+            <span class="time">{{new Date(post.created_at).toLocaleDateString()}}</span>
+            <div class="content">
                 {{{ post.body }}}
             </div>
         </article>
