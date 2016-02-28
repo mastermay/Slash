@@ -99,6 +99,36 @@ body {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+.post .content p {
+    margin-bottom: 20px;
+}
+.post .content code{
+    margin: 0 6px;
+    padding: 0 6px;
+    color: black;
+    background: rgba(240, 240, 240, 1);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+.post .content pre {
+    position: relative;
+    padding: 20px 20px 10px;
+    margin-bottom: 20px;
+    color: black;
+    background: rgba(240, 240, 240, 1);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    white-space: pre;
+    line-height: 1.2;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+}
+.post .content pre:before {
+    content: '--CODE--';
+    position: absolute;
+    right: 10px;
+    top: 6px;
+    color: rgba(0, 0, 0, 0.5);
+}
 .pagination {
     text-transform: uppercase;
     font-size: 12px;
