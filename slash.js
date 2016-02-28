@@ -65,6 +65,7 @@ var PostList = Vue.extend({
                     title = label + config['sep'] + title;
                 }
                 document.title = title;
+                document.getElementById("loading").style.display = "none";
 
                 CACHE[label + 'Page' + page] = {
                     posts: data,
@@ -111,6 +112,7 @@ var PostDetail = Vue.extend({
                 data.body = marked(data.body);
                 _self.$data.post = data;
                 document.title = data.title + config['sep'] + config['blogname'];
+                document.getElementById("loading").style.display = "none";
             }, function(response) {});
         }
     }
