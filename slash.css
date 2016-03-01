@@ -51,8 +51,29 @@ body {
     padding-bottom: 100px;
 }
 #content {
+    opacity: 0;
     transition: all .5s;
     -webkit-transition: all .5s;
+}
+#loading {
+    animation: breathe 1s infinite alternate;
+    -webkit-animation: breathe 1s infinite alternate;
+}
+@keyframes breathe {
+    0% {
+        opacity: .2;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes breathe {
+    0% {
+        opacity: .2;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 .header {
     position: relative;

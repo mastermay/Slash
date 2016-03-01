@@ -68,6 +68,7 @@ var PostList = Vue.extend({
                 }
                 document.title = title;
                 document.getElementById("content").style.opacity = 1;
+                document.getElementById("loading").style.display = 'none';
 
                 CACHE[label + 'Page' + page] = {
                     posts: data,
@@ -98,7 +99,6 @@ var PostDetail = Vue.extend({
     },
     route: {
         data: function() {
-            document.getElementById("content").style.opacity = 0.6;
             var cache = CACHE['Post' + this.$route.params['id']];
             if (cache) {
                 var data = cache.post;
@@ -117,6 +117,7 @@ var PostDetail = Vue.extend({
                 _self.$data.post = data;
                 document.title = data.title + config['sep'] + config['blogname'];
                 document.getElementById("content").style.opacity = 1;
+                document.getElementById("loading").style.display = 'none';
             }, function(response) {});
         }
     }
