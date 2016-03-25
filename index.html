@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Slash</title>
+    <link rel="stylesheet" href="slash.css" media="screen" charset="utf-8">
+    <script src="assets/vue.js" charset="utf-8"></script>
+    <script src="assets/vue-router.min.js" charset="utf-8"></script>
+    <script src="assets/vue-resource.min.js" charset="utf-8"></script>
+    <script src="assets/marked.min.js" charset="utf-8"></script>
+    <script src="config.js" charset="utf-8"></script>
+    <script src="slash.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <div id="wrap">
+        <div id="container">
+            <header class="header">
+                <h1><a href="">./ Slash</a></h1>
+                <p>A github issues based blog.</p>
+            </header>
+            <div id="loading">Loading... </div>
+            <div id="content">
+                <router-view></router-view>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>
+            Powered by <a href="https://github.com/mastermay/Slash" target="_blank">Slash</a>
+        </p>
+    </footer>
+    <script type="text/template" id="postList">
+        <div class="posts">
+            <div class="post" v-for="post in posts">
+                <h2><a class="title" v-link="{ name: 'post', params: { id: post.number } }">{{ post.title }}</a></h2>
+                <ul class="tags" v-for="label in post.labels">
+                    <li class="tag"><a v-link="{ name: 'label', params: { name: label.name } }">{{label.name}}</a></li>
+                </ul>
+                <span class="time">{{new Date(post.created_at).toLocaleDateString()}}</span>
+            </div>
+        </div>
+        <div class="pagination" v-show="home">
+            <span v-show="prev">
+                <a v-link="{ name: 'page', params: { page: prev } }">prev</a>
+            </span>
+            <span v-show="next">
+                <a v-link="{ name: 'page', params: { page: next } }">next</a>
+            </span>
+        </div>
+        <div class="pagination" v-else>
+            <span v-show="prev">
+                <a v-link="{ name: 'labelPaged', params: { name:label, page: prev } }">prev</a>
+            </span>
+            <span v-show="next">
+                <a v-link="{ name: 'labelPaged', params: { name:label, page: next } }">next</a>
+            </span>
+        </div>
+    </script>
+
+    <script type="text/template" id="postDetail">
+        <article class="post">
+            <h2><a class="title" v-link="{ name: 'post', params: { id: post.number } }">{{ post.title }}</a></h2>
+            <ul class="tags" v-for="label in post.labels">
+                <li class="tag"><a v-link="{ name: 'label', params: { name: label.name } }">{{label.name}}</a></li>
+            </ul>
+            <span class="time">{{new Date(post.created_at).toLocaleDateString()}}</span>
+            <div class="content">
+                {{{ post.body }}}
+            </div>
+        </article>
+    </script>
+
+</body>
+
+</html>
