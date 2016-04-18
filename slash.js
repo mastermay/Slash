@@ -37,7 +37,7 @@ var PostList = Vue.extend({
             this.$http({
                 url: "https://api.github.com/repos/" + config['user'] + "/" + config['repo'] + "/issues",
                 data: {
-                    filter: 'created',
+                    creator: config['user'],
                     page: page,
                     per_page: config['per_page'],
                     labels: label
