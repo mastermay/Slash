@@ -15,9 +15,11 @@ config = {
     sep: ' | ',         // 博客标题间隔符
     user: 'mastermay',  // GitHub 用户名
     repo: 'Slash',      // GitHub repo 名
-    per_page: 1         // 每页显示文章数目，建议不要设置的太大
+    per_page: 1,        // 每页显示文章数目，建议不要设置的太大
+	duoshuo_id: 'slash' // 多说二级域名
 }
 ```
+[jQuery](http://jquery.com)
 
 [vue.js](https://github.com/vuejs/vue)
 
@@ -27,5 +29,4 @@ config = {
 
 [marked.js](https://github.com/chjj/marked)
 
-## TODO
-评论（多说）
+[多说](http://duoshuo.com)
