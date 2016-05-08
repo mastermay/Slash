@@ -99,17 +99,19 @@ var PostDetail = Vue.extend({
     },
     route: {
         data: function() {
-            var cache = CACHE['Post' + this.$route.params['id']];
+            var id = this.$route.params['id'],
+                cache = CACHE['Post' + id];
             if (cache) {
                 var data = cache.post;
                 data.body = marked(data.body);
                 this.$data.post = data;
                 document.getElementById("content").style.opacity = 1;
+                toggleDuoshuoComments('#content', parseInt(id));
                 return;
             }
             var _self = this;
             this.$http({
-                url: "https://api.github.com/repos/" + config['user'] + "/" + config['repo'] + "/issues/" + this.$route.params['id'],
+                url: "https://api.github.com/repos/" + config['user'] + "/" + config['repo'] + "/issues/" + id,
                 method: 'GET'
             }).then(function(response) {
                 var data = response.data;
@@ -118,6 +120,7 @@ var PostDetail = Vue.extend({
                 document.title = data.title + config['sep'] + config['blogname'];
                 document.getElementById("content").style.opacity = 1;
                 document.getElementById("loading").style.display = 'none';
+                toggleDuoshuoComments('#content', parseInt(id));
             }, function(response) {});
         }
     }
@@ -151,3 +154,12 @@ router.map({
 window.onload = function() {
     router.start(App, '#content');
 };
+
+function toggleDuoshuoComments(container, id) {
+    var el = document.createElement('div');
+    var url = window.location.href;
+    el.setAttribute('data-thread-key', id);
+    el.setAttribute('data-url', url);
+    DUOSHUO.EmbedThread(el);
+    jQuery(container).append(el);
+}
