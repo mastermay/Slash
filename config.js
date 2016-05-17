@@ -1,7 +1,7 @@
 config = {
-    blogname: 'Slash',
+    blogname: 'Alpaca's github Blog,
     sep: ' | ',
-    user: 'mastermay',
+    user: 'Alpaca4610',
     repo: 'Slash',
     per_page: 1,
     duoshuo_id: 'slash'
