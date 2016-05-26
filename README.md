@@ -22,7 +22,10 @@ config = {
 
 ## 注意事项
 
-直接 fork 是没有 issues 的，请 1) clone 编辑后上传；2)或者 fork 后修改 repo 名字。
+直接 fork 是没有 issues 的，请
+
+1. clone 编辑后上传；
+2. 或者 fork 后修改 repo 名字。
 
 
 many thanks to [jQuery](http://jquery.com), [vue.js](https://github.com/vuejs/vue), [vue-router](https://github.com/vuejs/vue-router), [vue-resource](https://github.com/vuejs/vue-resource), [marked.js](https://github.com/chjj/marked), [多说](http://duoshuo.com).
