@@ -1,4 +1,4 @@
-Vue.config.debug = true;
+// Vue.config.debug = true;
 var CACHE = {};
 var PostList = Vue.extend({
     template: '#postList',
