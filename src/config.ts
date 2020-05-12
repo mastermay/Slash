@@ -3,7 +3,7 @@ const config = {
   sep: ' | ',
   user: 'mastermay',
   repo: 'Slash',
-  per_page: 1
+  per_page: 2
 }
 
 export default config;

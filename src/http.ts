@@ -7,6 +7,15 @@ interface Options {
 
 export default function http(opts: Options) {
   return new Promise(function (resolve, reject) {
+    var params = opts.params;
+    if (params && typeof params === 'object') {
+      params = Object.keys(params).map(function (key) {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+      }).join('&');
+    }
+    if (opts.method === 'GET' || opts.method === 'get' && params) {
+      opts.url = opts.url + '?' + params
+    }
     var xhr = new XMLHttpRequest();
     xhr.open(opts.method, opts.url);
     xhr.onload = function () {
@@ -30,14 +39,7 @@ export default function http(opts: Options) {
         xhr.setRequestHeader(key, opts.headers[key]);
       });
     }
-    var params = opts.params;
-    // We'll need to stringify if we've been given an object
-    // If we have a string, this is skipped.
-    if (params && typeof params === 'object') {
-      params = Object.keys(params).map(function (key) {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
-      }).join('&');
-    }
+    console.log(params)
     xhr.send(params);
   });
 }
