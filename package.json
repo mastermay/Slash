@@ -4,8 +4,8 @@
   "description": "A Github issues based blog",
   "private": true,
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "repository": {
     "type": "git",
@@ -25,9 +25,11 @@
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.3",
     "typescript": "^3.8.3",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^4.2.2"
   },
   "dependencies": {
     "marked": "^1.0.0"
